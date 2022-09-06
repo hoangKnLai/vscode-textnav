@@ -1,11 +1,15 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
+// import XRegExp = require("xregexp");
+
+
 
 
 // ------- CONFIG -------
 // TODO: add word expression to config
 let word = `a-zA-Z0-9_`;
+let group = `\(\)\{\}\<\>\/\/`;
 
 // function getEditor() {
 //   let editor = vscode.window.activeTextEditor;
@@ -50,21 +54,55 @@ function findRegExp(
   }
 }
 
+/**
+ *
+ * @returns - [lineNum, start, stop] useable with setSelection.
+ */
+function findWord(editor: vscode.TextEditor){
+  // Get the line from active document at cursor
+  let lineNum = editor.selection.start.line;
+  let line = editor.document.lineAt(lineNum);
+  let loc = editor.selection.start.character;
+
+  if (line.isEmptyOrWhitespace) {
+    return[lineNum, loc, loc];
+  }
+
+  let start = loc;
+  if (line.text.charAt(loc).match(/\s/)){  // cursor on a space character
+    start = findRegExp(line.text, /\S/, loc, false);  // find non-space
+  }
+  start = findRegExp(line.text, `\\s|[^${word}]`, start, false);  // find start of word
+  if (start > 0){
+    start += 1;
+  }
+  let stop = findRegExp(line.text, `[^${word}]`, start + 1, true);
+  return [lineNum, start, stop] as const;
+}
+
 
 /**
  * Change editor selection to position [start, stop)
  *
- * @param editor
+ * @param editor - default to vscode.window.activeTextEditor
  * @param lineNum
  * @param start
  * @param stop
  */
 function setSelection(
-  editor: vscode.TextEditor,
+  editor: vscode.TextEditor | undefined,
   lineNum: number,
   start: number,
-  stop: number
+  stop: number,
 ) {
+  if (editor === undefined){
+    editor = vscode.window.activeTextEditor;
+    if (editor === undefined){
+      console.error('Fail to retrieve Active Editor');
+      return;
+    }
+  }
+
   console.log(`Line: ${lineNum}, char: ${start}-${stop}`);
   let anchor = editor.selection.start.with(lineNum, start);
   let active = editor.selection.start.with(lineNum, stop);
@@ -80,38 +118,22 @@ export function activate(context: vscode.ExtensionContext) {
   // This line of code will only be executed once when your extension is activated
   console.log('+"texnav" activated');
 
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
+
+  // ----- COMMANDS -----
   function selectWord() {
-    // Get the line from active document at cursor
     let editor = vscode.window.activeTextEditor;
     if (editor === undefined) {
       console.error("Unable to access Active Text Editor");
       return;
     }
-
-    let lineNum = editor.selection.start.line;
-    let line = editor.document.lineAt(lineNum);
-
-    if (line.isEmptyOrWhitespace) {
-      return;
-    }
-
-    let loc = editor.selection.start.character;
-    let start = loc;
-    if (line.text.charAt(loc).match(/\s/)){  // cursor on a space character
-      start = findRegExp(line.text, /\S/, loc, false);  // find non-space
-    }
-    start = findRegExp(line.text, `\\s|[^${word}]`, start, false);  // find start of word
-    if (start > 0){
-      start += 1;
-    }
-    let stop = findRegExp(line.text, `[^${word}]`, start + 1, true);
+    let results = findWord(editor);
+    let lineNum = results[0];
+    let start = results[1];
+    let stop = results[2];
     setSelection(editor, lineNum, start, stop);
-    return;
   }
 
+  // The commandId string must match the command field in package.json
   context.subscriptions.push(
     vscode.commands.registerCommand("texnav.selectWord", selectWord)
   );
