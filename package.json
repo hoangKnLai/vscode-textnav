@@ -4,21 +4,29 @@
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
-		"vscode": "^1.71.0"
+		"vscode": "^1.60.x"
 	},
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:texnav.helloWorld"
+        "onStartupFinished"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "texnav.helloWorld",
-				"title": "Hello World"
+				"category": "texnav",
+				"command": "texnav.selectWord",
+				"title": "Select a Word Near Cursor"
 			}
+		],
+		"keybindings": [
+            {
+                "command": "texnav.selectWord",
+                "key": "alt+a",
+                "when": ""
+            }
 		]
 	},
 	"scripts": {

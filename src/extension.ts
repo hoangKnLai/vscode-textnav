@@ -3,6 +3,10 @@
 import * as vscode from "vscode";
 
 
+// ------- CONFIG -------
+// TODO: add word expression to config
+let word = `a-zA-Z0-9_`;
+
 // function getEditor() {
 //   let editor = vscode.window.activeTextEditor;
 //   if (editor === undefined) {
@@ -13,59 +17,61 @@ import * as vscode from "vscode";
 // }
 
 
-// ------- Support -------
-function selectText(
+// ------- SUPPORT -------
+/**
+ * Find the matching pattern per character.
+ *
+ * @param str - a line of text
+ * @param expr - input forwarding to string.match()
+ * @param start - starting position to iterated toward finding the match
+ * @param forward - the direction of the iteration
+ * @returns - location of first match or length of text if forward, 0 otherwise.
+ */
+function findRegExp(
+  str: string,
+  expr: string | RegExp,
+  start: number = 0,
+  forward: boolean = true
+) {
+  if (forward){
+    for (let i=start; i < str.length; i++){
+      if (str.charAt(i).match(expr)){
+        return i;
+      }
+    }
+    return str.length - 1;
+  } else{
+    for (let i=start; i > 0; i--){
+      if (str.charAt(i).match(expr)){
+        return i;
+      }
+    }
+    return 0;
+  }
+}
+
+
+/**
+ * Change editor selection to position [start, stop)
+ *
+ * @param editor
+ * @param lineNum
+ * @param start
+ * @param stop
+ */
+function setSelection(
   editor: vscode.TextEditor,
   lineNum: number,
   start: number,
   stop: number
 ) {
+  console.log(`Line: ${lineNum}, char: ${start}-${stop}`);
   let anchor = editor.selection.start.with(lineNum, start);
   let active = editor.selection.start.with(lineNum, stop);
-  editor.selection.anchor = anchor;
-  editor.selection.active = active;
-  // let selection = new vscode.Selection(anchor, active);
-  // editor.revealRange(
-  //   selection.with(),
-  //   vscode.TextEditorRevealType.InCenterIfOutsideViewport
-  // );
+  let selection = new vscode.Selection(anchor, active);
+  editor.selection = selection;
 }
 
-function selectWord() {
-  // Get the line from active document at cursor
-  let editor = vscode.window.activeTextEditor;
-  if (editor === undefined) {
-    console.error("Unable to access Active Text Editor");
-    return;
-  }
-
-  let lineNum = editor.selection.start.line;
-  let line = editor.document.lineAt(lineNum);
-
-  // Find the index of space nearest cursor
-  if (line.isEmptyOrWhitespace) {
-    return;
-  }
-
-  let loc = editor.selection.start.character;
-  let stop = line.text.length - 1;
-  let start = 0;
-
-  for (let ii = loc; ii < line.text.length; ii++) {
-    if (line.text.charAt(ii).match(/[\s]{1}/)) {
-      stop = ii;
-      break;
-    }
-  }
-
-  for (let ii = loc; ii > 0; ii--) {
-    if (line.text.charAt(ii).match(/[\s]{1}/)) {
-      start = ii;
-      break;
-    }
-  }
-  selectText(editor, lineNum, start, stop);
-}
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -77,13 +83,38 @@ export function activate(context: vscode.ExtensionContext) {
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
-  let disposable = vscode.commands.registerCommand("texnav.helloWorld", () => {
-    // The code you place here will be executed every time your command is executed
-    // Display a message box to the user
-    vscode.window.showInformationMessage("Hello World from texnav!");
-  });
+  function selectWord() {
+    // Get the line from active document at cursor
+    let editor = vscode.window.activeTextEditor;
+    if (editor === undefined) {
+      console.error("Unable to access Active Text Editor");
+      return;
+    }
 
-  context.subscriptions.push(disposable);
+    let lineNum = editor.selection.start.line;
+    let line = editor.document.lineAt(lineNum);
+
+    if (line.isEmptyOrWhitespace) {
+      return;
+    }
+
+    let loc = editor.selection.start.character;
+    let start = loc;
+    if (line.text.charAt(loc).match(/\s/)){  // cursor on a space character
+      start = findRegExp(line.text, /\S/, loc, false);  // find non-space
+    }
+    start = findRegExp(line.text, `\\s|[^${word}]`, start, false);  // find start of word
+    if (start > 0){
+      start += 1;
+    }
+    let stop = findRegExp(line.text, `[^${word}]`, start + 1, true);
+    setSelection(editor, lineNum, start, stop);
+    return;
+  }
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("texnav.selectWord", selectWord)
+  );
 }
 
 // this method is called when your extension is deactivated
