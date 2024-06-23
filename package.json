@@ -9,22 +9,103 @@
   "categories": [
     "Other"
   ],
+  "publisher": "HoangKimLai",
+  "author": {"name": "Hoang-Kim Lai"},
   "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "category": "textnav",
-        "command": "textnav.selectWord",
-        "title": "Select a Word Near Cursor"
+    "configuration": {
+      "title": "textnav",
+      "properties": {
+          "textnav.navigatorLanguageId": {
+              "type": "array",
+              "default": [
+                  "python",
+                  "typescript",
+                  "javascript",
+                  "rust",
+                  "markdown"
+              ],
+              "markdownDescription": "[Language identifier](https://code.visualstudio.com/docs/languages/identifiers) navigator to operates on"
+          },
+          "textnav.navigatorTrackingOption": {
+              "type": "string",
+              "enum": [
+                  "visible",
+                  "opened"
+              ],
+              "default": "visible",
+              "markdownEnumDescriptions": [
+                  "Only show sections of VISIBLE documents of navigatorLanguageId",
+                  "Show sections of ALL opened documents of navigatorLanguageId"
+              ]
+          },
+          "textnav.SectionLevelTag": {
+              "type": "string",
+              "default": "-",
+              "markdownDescription": "Indent level tag after a SectionTag like `# %% - Heading 1` to increase heading level by +1"
+          },
+          "textnav.SectionTag": {
+              "type": "array",
+              "default": [
+                  "# %%",
+                  "// ==",
+                  "/(^(#)#+)+/"
+              ],
+              "markdownDescription": "A tag or regular expression to identify line as start of a section. E.g., `# %%` for Jupyter style or `(^(#)#+)+` for markdown 2nd level heading and lower."
+          }          
       }
+    },
+    "commands": [
+        {
+            "category": "textnav",
+            "command": "textnav.moveToSectionTagAbove",
+            "title": "Move Cursor to Section Tag Above"
+        },
+        {
+            "category": "textnav",
+            "command": "textnav.moveToSectionTagBelow",
+            "title": "Move Cursor to Section Tag Below"
+        },
+        {
+            "category": "textnav",
+            "command": "textnav.naviJumpToSection",
+            "shortTitle": "Jump",
+            "icon": "$(arrow-circle-right)",
+            "title": "Jump to ..."
+        }      
     ],
     "keybindings": [
-      {
-        "command": "textnav.selectWord",
-        "key": "alt+a"
-      }
-    ]
+        {
+            "command": "textnav.moveToSectionTagAbove",
+            "key": "alt+k",
+            "when": "editorTextFocus"
+        },
+        {
+            "command": "textnav.moveToSectionTagBelow",
+            "key": "alt+j",
+            "when": "editorTextFocus"
+        }
+    ],
+    "viewsContainers": {
+        "activitybar": [
+            {
+                "id": "text-navigator",
+                "title": "Code Navigator",
+                "icon": "icons/sectioned_snake.svg"
+            }
+        ]
+    },
+    "views": {
+        "text-navigator": [
+            {
+                "id": "textNavigator",
+                "name": "Sections",
+                "icon": "media/sectioned_snake.svg",
+                "contextualTitle": "Text Navigation"
+            }
+        ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
