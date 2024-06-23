@@ -1,31 +1,28 @@
 {
-  "name": "texnav",
-  "displayName": "texnav",
+  "name": "textnav",
+  "displayName": "textnav",
   "description": "",
-  "version": "0.0.1",
+  "version": "2024.0.1",
   "engines": {
-    "vscode": "^1.60.x"
+    "vscode": "^1.90.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
+  "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "category": "texnav",
-        "command": "texnav.selectWord",
+        "category": "textnav",
+        "command": "textnav.selectWord",
         "title": "Select a Word Near Cursor"
       }
     ],
     "keybindings": [
       {
-        "command": "texnav.selectWord",
-        "key": "alt+a",
-        "when": ""
+        "command": "textnav.selectWord",
+        "key": "alt+a"
       }
     ]
   },
@@ -38,19 +35,15 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.1",
+    "@types/vscode": "^1.90.0",
+    "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
-    "@types/vscode": "^1.71.0",
-    "@typescript-eslint/eslint-plugin": "^5.30.0",
-    "@typescript-eslint/parser": "^5.30.0",
-    "@vscode/test-electron": "^2.1.5",
-    "eslint": "^8.18.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.0.0",
-    "typescript": "^4.7.4"
-  },
-  "dependencies": {
-    "xregexp": "^5.1.1"
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6",
+    "@vscode/test-electron": "^2.3.4"
   }
 }

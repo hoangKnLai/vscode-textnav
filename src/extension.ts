@@ -135,7 +135,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // The commandId string must match the command field in package.json
   context.subscriptions.push(
-    vscode.commands.registerCommand("texnav.selectWord", selectWord)
+    vscode.commands.registerCommand("textnav.selectWord", selectWord)
   );
 }
 
