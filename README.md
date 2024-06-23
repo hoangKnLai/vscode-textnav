@@ -1,71 +1,44 @@
-# textnav README
+# textnav
 
-This is the README for your extension "textnav". After writing up a brief description, we recommend including the following sections.
+Text navigator and organization with the goal of enabling and improving code readability.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Key features tagged with `textnav`:
 
-For example if there is an image subfolder under your extension project workspace:
+- **Settings for custom sectioning**
+  - Support multiple code section tags (e.g., `# %%`, `// ==`, or regular expression)
+  - Code section tag association with language identifier (e.g., `python, rust`)
+- **Editor visualization of code section blocks**
+  - Horizontal line divider and bolder text indicating each section starting line
+- **Code section navigation**
+  - A view in the primary sidebar providing section heading layout of associated files
+  - Use `cltr+shift+i b` to open `Code Section Navigator`
+  - Click on a heading focus the active editor to the section  
+  - Section automatic with option for lowering heading options
+    - Default tab-in section is a lower level section
+- **Code section folding (issue #32)**
+  - Folding sections as region. See [VSCode Folding Documentation](https://code.visualstudio.com/docs/editor/codebasics#_folding).
+  - Note that vscode resolves criss-cross folding by taking the higher level folding
 
-\!\[feature X\]\(images/feature-x.png\)
+See `Feature Contribution` tab in VSCode Extension (Ctrl + Shift + X)
+panel for latest features and details.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+If you find the extension useful, it would be awesome if you can leave a comment
+and/or a suggestion on the [project page](https://github.com/hoangKnLai/vscode-textnav/issues)!
+
+- What feature you like and use the most?
+- What other feature(s) you would like to have?
+
+![feature X](md_img/v2024x.png)
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+None
 
-## Extension Settings
+## Releases
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### 2024.0.x
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Initial release sliced from [vscode-ipython](https://github.com/hoangKnLai/vscode-ipython)
+    - Likely not compatible with `vscode-ipython` so do disable this

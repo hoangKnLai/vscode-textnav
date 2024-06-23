@@ -1,5 +1,6 @@
 {
   "name": "textnav",
+  "icon": "md_img/icon.png",
   "displayName": "textnav",
   "description": "",
   "version": "2024.0.1",
@@ -85,7 +86,12 @@
             "command": "textnav.moveToSectionTagBelow",
             "key": "alt+j",
             "when": "editorTextFocus"
-        }
+        },
+        {
+          "command": "workbench.view.extension.text-navigator",
+          "key": "alt+b",
+          "when": "editorTextFocus"
+      }
     ],
     "viewsContainers": {
         "activitybar": [
