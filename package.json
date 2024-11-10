@@ -11,106 +11,111 @@
     "Other"
   ],
   "publisher": "HoangKimLai",
-  "author": {"name": "Hoang-Kim Lai"},
-  "activationEvents": ["onStartupFinished"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hoangKnLai/vscode-textnav"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
       "title": "textnav",
       "properties": {
-          "textnav.navigatorLanguageId": {
-              "type": "array",
-              "default": [
-                  "python",
-                  "typescript",
-                  "javascript",
-                  "rust",
-                  "markdown"
-              ],
-              "markdownDescription": "[Language identifier](https://code.visualstudio.com/docs/languages/identifiers) navigator to operates on"
-          },
-          "textnav.navigatorTrackingOption": {
-              "type": "string",
-              "enum": [
-                  "visible",
-                  "opened"
-              ],
-              "default": "visible",
-              "markdownEnumDescriptions": [
-                  "Only show sections of VISIBLE documents of navigatorLanguageId",
-                  "Show sections of ALL opened documents of navigatorLanguageId"
-              ]
-          },
-          "textnav.SectionLevelTag": {
-              "type": "string",
-              "default": "-",
-              "markdownDescription": "Indent level tag after a SectionTag like `# %% - Heading 1` to increase heading level by +1"
-          },
-          "textnav.SectionTag": {
-              "type": "array",
-              "default": [
-                  "# %%",
-                  "// ==",
-                  "/(^(#)#+)+/"
-              ],
-              "markdownDescription": "A tag or regular expression to identify line as start of a section. E.g., `# %%` for Jupyter style or `(^(#)#+)+` for markdown 2nd level heading and lower."
-          }          
+        "textnav.navigatorLanguageId": {
+          "type": "array",
+          "default": [
+            "python",
+            "typescript",
+            "javascript",
+            "rust",
+            "markdown"
+          ],
+          "markdownDescription": "[Language identifier](https://code.visualstudio.com/docs/languages/identifiers) navigator to operates on"
+        },
+        "textnav.navigatorTrackingOption": {
+          "type": "string",
+          "enum": [
+            "visible",
+            "opened"
+          ],
+          "default": "visible",
+          "markdownEnumDescriptions": [
+            "Only show sections of VISIBLE documents of navigatorLanguageId",
+            "Show sections of ALL opened documents of navigatorLanguageId"
+          ]
+        },
+        "textnav.SectionLevelTag": {
+          "type": "string",
+          "default": "-",
+          "markdownDescription": "Indent level tag after a SectionTag like `# %% - Heading 1` to increase heading level by +1"
+        },
+        "textnav.SectionTag": {
+          "type": "array",
+          "default": [
+            "# %%",
+            "// ==",
+            "/(^(#)#+)+/"
+          ],
+          "markdownDescription": "A tag or regular expression to identify line as start of a section. E.g., `# %%` for Jupyter style or `(^(#)#+)+` for markdown 2nd level heading and lower."
+        }
       }
     },
     "commands": [
-        {
-            "category": "textnav",
-            "command": "textnav.moveToSectionTagAbove",
-            "title": "Move Cursor to Section Tag Above"
-        },
-        {
-            "category": "textnav",
-            "command": "textnav.moveToSectionTagBelow",
-            "title": "Move Cursor to Section Tag Below"
-        },
-        {
-            "category": "textnav",
-            "command": "textnav.naviJumpToSection",
-            "shortTitle": "Jump",
-            "icon": "$(arrow-circle-right)",
-            "title": "Jump to ..."
-        }      
+      {
+        "category": "textnav",
+        "command": "textnav.moveToSectionTagAbove",
+        "title": "Move Cursor to Section Tag Above"
+      },
+      {
+        "category": "textnav",
+        "command": "textnav.moveToSectionTagBelow",
+        "title": "Move Cursor to Section Tag Below"
+      },
+      {
+        "category": "textnav",
+        "command": "textnav.naviJumpToSection",
+        "shortTitle": "Jump",
+        "icon": "$(arrow-circle-right)",
+        "title": "Jump to ..."
+      }
     ],
     "keybindings": [
-        {
-            "command": "textnav.moveToSectionTagAbove",
-            "key": "alt+k",
-            "when": "editorTextFocus"
-        },
-        {
-            "command": "textnav.moveToSectionTagBelow",
-            "key": "alt+j",
-            "when": "editorTextFocus"
-        },
-        {
-          "command": "workbench.view.extension.text-navigator",
-          "key": "alt+b",
-          "when": "editorTextFocus"
+      {
+        "command": "textnav.moveToSectionTagAbove",
+        "key": "alt+k",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "textnav.moveToSectionTagBelow",
+        "key": "alt+j",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "workbench.view.extension.text-navigator",
+        "key": "alt+b",
+        "when": "editorTextFocus"
       }
     ],
     "viewsContainers": {
-        "activitybar": [
-            {
-                "id": "text-navigator",
-                "title": "Code Navigator",
-                "icon": "icons/sectioned_snake.svg"
-            }
-        ]
+      "activitybar": [
+        {
+          "id": "text-navigator",
+          "title": "Code Navigator",
+          "icon": "icons/sectioned_snake.svg"
+        }
+      ]
     },
     "views": {
-        "text-navigator": [
-            {
-                "id": "textNavigator",
-                "name": "Sections",
-                "icon": "media/sectioned_snake.svg",
-                "contextualTitle": "Text Navigation"
-            }
-        ]
+      "text-navigator": [
+        {
+          "id": "textNavigator",
+          "name": "Sections",
+          "icon": "media/sectioned_snake.svg",
+          "contextualTitle": "Text Navigation"
+        }
+      ]
     }
   },
   "scripts": {
@@ -122,15 +127,15 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.90.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.90.0",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
     "eslint": "^8.47.0",
     "glob": "^10.3.3",
     "mocha": "^10.2.0",
-    "typescript": "^5.1.6",
-    "@vscode/test-electron": "^2.3.4"
+    "typescript": "^5.1.6"
   }
 }
