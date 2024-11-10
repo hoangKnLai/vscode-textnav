@@ -8,7 +8,19 @@
     "vscode": "^1.90.0"
   },
   "categories": [
-    "Other"
+    "Formatters",
+    "Visualization",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "code", 
+    "text", 
+    "navigator", 
+    "languages",
+    "section",
+    "cell",
+    "notebook",
+    "ipython"
   ],
   "publisher": "HoangKimLai",
   "repository": {
